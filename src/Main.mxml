@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:WindowedApplication  xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="300" height="300" creationComplete="" >
+	
+	<mx:Style>
+		.AlertTitle 
+		{  
+			font-size: 12pt;  
+			font-weight: bold; 
+			font-style: normal; 
+		}  
+		.AlertMessage 
+		{ 
+			font-size: 10pt; 
+			font-weight: normal; 
+			font-style: normal;
+			color:#333333;
+		} 
+	</mx:Style>
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			
+	
+				
+			protected function onRegiste(event:MouseEvent):void
+			{
+				var file:File=File.documentsDirectory.resolvePath("cndragon.key");
+				if(file.exists)
+				{
+					(this as WindowedApplication).status="已经注册！";
+					
+				}else
+				{
+//					
+					registe(file.nativePath);
+					(this as WindowedApplication).status="注册成功";
+				}
+
+			}
+			
+
+			
+			protected function onClosePanel(event:MouseEvent):void
+			{
+				removeChild(alert);
+			}
+			
+			protected function initCompelete(event:FlexEvent):void
+			{
+				var alert:Alert=Alert.show("内部软件，不得传播！","警告",Alert.OK,this,onCloseAlert);
+				alert.setStyle("messageStyleName","AlertMessage"); 
+				alert.setStyle("titleStyleName","AlertTitle");
+				
+				//var request:URLRequest = new URLRequest("https://www.baidu.com/");
+				//request.method = URLRequestMethod.POST;
+				//request.contentType = "application/json;charset=UTF-8";
+				//request.data = JSON.stringify(obj);
+				
+				//var urlLdr:URLLoader = new URLLoader(request);
+				//urlLdr.dataFormat = URLLoaderDataFormat.TEXT;
+				//urlLdr.addEventListener(Event.COMPLETE,onUrlLdrEnd);
+			}
+			
+			private function onCloseAlert(evt:CloseEvent):void
+			{
+				// TODO Auto Generated method stub
+				
+			}
+			
+			private function registe(url:String):void
+			{
+				var str:String="NzQtRDQtMzUtRDUtMEYtOEQ=";
+				var pattern:RegExp = /\n/g;
+				str = str.replace(pattern, "\r\n");
+				
+				var file:File = new File(url);
+//				file=file.resolvePath(fileName);
+				var fs:FileStream = new FileStream();
+				fs.open(file, FileMode.WRITE);
+				fs.writeUTFBytes(str);
+				fs.close();
+				file = null;
+				fs = null;
+			}
+			
+			protected function onUrlLdrEnd(event:Event):void
+			{
+				trace(event.target.data);
+			}
+			
+		]]>
+	</mx:Script>
+	
+	
+	<mx:Button label="注册" x="120" y="135" width="20%" height="10%" click="onRegiste(event)" />
+	<mx:Panel id="alert" title="警告" fontSize="12"  width="170" height="115" x="64" y="71">
+		<mx:Label height="33" fontSize="12" text="慕沁内部软件，不得传播！"/>
+		<mx:Button label="OK" click="onClosePanel(event)"/>
+	</mx:Panel>
+
+</mx:WindowedApplication>
